@@ -23,16 +23,13 @@
             </header>
 
             <div class="w-full p-6">
-                @foreach ($blogs as $blogs)
+                @foreach ($category as $cat)
                     <p class="text-gray-700">
                         <table>
                             <tr>
-                                <td class='border p-5'> | {{$blogs->title}} | </td>
-                                <td class='border'> | {{$blogs->content}} | </td>
-                                <td class='border'> | {{$blogs->author->name}} | </td>
-                                <td class='border'> | {{$blogs->category->name}} | </td>
-                                <img src="{{asset('images/'.$blogs->image)}}">
-                                <td class='border'> | <a href="{{url('blog/'.$blogs->id)}}"> | Details | </a></td>
+                                <td class='border p-5'> | {{$cat->name}} | </td>
+                                <td class='border'> | {{$cat->description}} | </td>
+                                <td class='border'> | <a href="{{url('admin/category/'.$cat->id.'/delete')}}"> | Delete | </a></td>
                             </tr>
                         </table>
                     </p>

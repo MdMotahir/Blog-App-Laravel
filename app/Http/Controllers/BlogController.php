@@ -5,6 +5,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Comment;
+use Gate;
 
 class BlogController extends Controller
 {
@@ -79,9 +81,14 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        $data=Blog::find($id);
-        $cat=Category::all();
-        return view('Blog.update',['data'=>$data,'category'=>$cat]);
+        if (! Gate::allows('update',Blog::find($id))){
+            abort(403);
+        }else{
+            $data=Blog::find($id);
+            $cat=Category::all();
+            return view('Blog.update',['data'=>$data,'category'=>$cat]);
+        }
+            
     }
 
     /**
@@ -103,7 +110,6 @@ class BlogController extends Controller
         $image_name=time().'-'.$request->title.'.'.$request->image->extension();
 
         $request->image->move(public_path('images'), $image_name);
-        
         $update_blog=Blog::find($id);
         $update_blog->title=$request->title;
         $update_blog->content=$request->content;
@@ -122,7 +128,23 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        Blog::where('id',$id)->delete();
-        return redirect('/blog');
+        $data=Blog::find($id);
+        if (! Gate::allows('delete',$data)){
+            abort(403);
+        }else{
+            $data->delete();
+            return redirect('/blog')->with('success','your post is deleted');
+        }
+    }
+    public function save_comment(Request $request, $id){
+        $request->validate([
+            'comment'=>'required',
+        ]);
+        $comment=Comment::create([
+            'comment'=>$request->comment,
+            'author_id'=>auth()->user()->id,
+            'blog_id'=>$id,
+        ]);
+        return redirect('blog/'.$id)->with('status','Your comment is added');
     }
 }

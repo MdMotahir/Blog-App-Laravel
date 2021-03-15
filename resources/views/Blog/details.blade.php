@@ -21,7 +21,7 @@
                 <p class="p-5"> | {{$blogs->content}} | </p>
                 <p class="p-5"> | {{$blogs->author->name}} | </p>
                 <p class="p-5"> | {{$blogs->category->name}} | </p>
-                <p class="p-5"><img src="{{public_path($blogs->image)}}"></p>
+                <p class="p-5"><img src="{{asset('images/'.$blogs->image)}}"></p>
                 @if (isset(Auth::user()->id) && Auth::user()->id == $blogs->author_id)
                     <p class="p-5"><a href="{{url('blog/'.$blogs->id.'/edit')}}"> | Update | </a></p>
                     <p class="p-5"><a href="{{url('blog/'.$blogs->id.'/delete')}}"> | Delete | </a></p>
@@ -38,12 +38,14 @@
                     @endif
                 </div>
             </div>
-            <form method='POST' action="{{url('blog/'.$blogs->id)}}">
-                @csrf
-                <label for="comment">Your Comment please</label>
-                <input type="text" name='comment' required>
-                <button type="submit">submit</button>
-            </form>
+            @if (Auth::user())
+                <form method='POST' action="{{url('blog/'.$blogs->id.'/save_comment')}}">
+                    @csrf
+                    <label for="comment">Your Comment please</label>
+                    <input type="text" name='comment' required>
+                    <button type="submit">submit</button>
+                </form>
+            @endif
         </section>
     </div>
 </main>

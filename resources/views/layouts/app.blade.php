@@ -32,7 +32,9 @@
                         @endif
                     @else
                         <span>{{ Auth::user()->name }}</span>
-
+                        @if (Auth::user()->role == 'admin')
+                            <a href="">Admin Dashboard</a>
+                        @endif
                         <a href="{{ route('logout') }}"
                            class="no-underline hover:underline"
                            onclick="event.preventDefault();

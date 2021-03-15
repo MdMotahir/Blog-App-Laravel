@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
 
-class CategoryController extends Controller
+class AdminController extends Controller
 {
     public function __construct()
     {
@@ -18,8 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data=Category::all();
-        return view('Category.index',['category'=>$data]);
+        //
     }
 
     /**
@@ -29,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('Category.add');
+        //
     }
 
     /**
@@ -40,15 +38,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name'=>'required',
-            'description'=>'required',
-        ]);
-        $cat=Category::create([
-            'name'=>$request->name,
-            'description'=>$request->description,
-        ]);
-        return redirect('/home')->with('success','category is created');
+        //
     }
 
     /**
@@ -93,8 +83,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $cat=Category::find($id);
-        $cat->delete();
-        return redirect('admin/category');
+        //
     }
 }
