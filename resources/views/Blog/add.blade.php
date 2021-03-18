@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+
+
 @if (Auth::user())
     <main class="sm:container sm:mx-auto sm:max-w-lg sm:mt-10">
         <div class="flex">
@@ -13,7 +16,7 @@
                             <label for="title" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
                                 Title :
                             </label>
-                            <input id="title" type="text" class="form-input w-full @error('title')  border-red-500 @enderror"
+                            <input class='border-2 border-red-500' id="title" type="text" class="form-input w-full @error('title')  border-red-500 @enderror"
                                 name="title" required>
 
                             @error('title')

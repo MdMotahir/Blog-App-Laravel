@@ -68,7 +68,7 @@ class BlogPolicy
      */
     public function delete(User $user, Blog $blog)
     {
-        return $user->id === $blog->author_id
+        return $user->id === $blog->author_id || $user->role=='admin'
                 ? Response::allow()
                 : Response::deny('You do not own this post.');
     }

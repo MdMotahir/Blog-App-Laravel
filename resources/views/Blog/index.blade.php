@@ -1,44 +1,72 @@
-@extends('layouts.app')
+@extends('Home')
 
 @section('content')
-<main class="sm:container sm:mx-auto sm:mt-10">
-    <div class="w-full sm:px-6">
-
-        @if (session('status'))
-            <div class="text-sm border border-t-8 rounded text-green-700 border-green-600 bg-green-100 px-3 py-4 mb-4" role="alert">
-                {{ session('status') }}
-            </div>
-        @endif
+    <div class="container" style="padding-top:10px ">
         @if (session('success'))
-            <div class="text-sm border border-t-8 rounded text-green-700 border-green-600 bg-green-100 px-3 py-4 mb-4" role="alert">
-                {{ session('success') }}
+            <div class="alert alert-success" role="alert">
+                {{session('success')}}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{session('error')}}
             </div>
         @endif
 
-        <section class="flex flex-col break-words bg-white sm:border-1 sm:rounded-md sm:shadow-sm sm:shadow-lg">
-            
-            <header class="font-semibold bg-gray-200 text-gray-700 py-5 px-6 sm:py-6 sm:px-8 sm:rounded-t-md">
-                Blogs Page
-                <a href="{{url('blog/create')}}">Create Blog</a>
-            </header>
-
-            <div class="w-full p-6">
-                @foreach ($blogs as $blogs)
-                    <p class="text-gray-700">
-                        <table>
-                            <tr>
-                                <td class='border p-5'> | {{$blogs->title}} | </td>
-                                <td class='border'> | {{$blogs->content}} | </td>
-                                <td class='border'> | {{$blogs->author->name}} | </td>
-                                <td class='border'> | {{$blogs->category->name}} | </td>
-                                <img src="{{asset('images/'.$blogs->image)}}">
-                                <td class='border'> | <a href="{{url('blog/'.$blogs->id)}}"> | Details | </a></td>
-                            </tr>
-                        </table>
-                    </p>
-                @endforeach
+        <div class="row">
+            <div class="col-lg-8">
+                @if ($blogs)
+                    @foreach ($blogs as $blog)
+                        <div style="padding: 30px; margin-bottom: 60px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                            <div style="max-height: 440px; margin: -30px -30px 20px -30px; overflow: hidden;">
+                                <img class="img-fluid" src="{{asset('images/'.$blog->image)}}" alt="" srcset="">
+                            </div>
+                            <p style="font-size: 28px; font-weight: bold; padding: 0; margin: 0 0 20px 0;"><a style="color: #012970; transition:0.3s;" href="{{url('blog/'.$blog->id)}}">{{$blog->title}}</a></p>
+                            <div style="margin-bottom: 15px; color: #4084fd;">
+                                <ul style="display: flex; flex-wrap: wrap; list-style: none; align-items: center; padding: 0; margin: 0px;">
+                                    <li style="padding-left: 20px;"><span class="bi bi-person" style="font-size: 16px; margin-right: 8px; line-height: 0px;"></span><a style="color: #777777; font-size: 14px; display: inline-block; line-height: 1;" href="">{{$blog->author->name}}</a></li>
+                                    <li style="padding-left: 20px;"><span class="bi bi-person" style="font-size: 16px; margin-right: 8px; line-height: 0px;"></span><a style="color: #777777; font-size: 14px; display: inline-block; line-height: 1;" href="">{{$blog->category->name}}</a></li>
+                                    <li style="padding-left: 20px;"><span class="oi oi-comment-square" style="font-size: 16px; margin-right: 8px; line-height: 0px;"></span><a style="color: #777777; font-size: 14px; display: inline-block; line-height: 1;" href="">12 Comments</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p style="line-height: 24px;">{{$blog->content}}</p>
+                                <div style="-moz-text-align-last: right; text-align-last: right;">
+                                    <a style="display: inline-block; background: #4154f1; color: #fff; padding:6px 20px; transition: 0.3s; font-size: 14px; border-radius: 4px;" href="{{url('blog/'.$blog->id)}}">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div style="padding: 30px; margin-bottom: 60px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                        <p style="font-size: 28px; font-weight: bold; padding: 0; margin: 0 0 20px 0;">Sorry! No data found.....  <a style="color: #012970; transition:0.3s;" href="">Home</a></p>
+                    </div>
+                @endif
+                <div class="pagination">
+                    <ul class="justify-content-center">
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    </ul>
+                </div>
             </div>
-        </section>
+            <div class="col-lg-4">
+                <div style="padding: 30px; margin: 0 0 60px 20px; box-shadow: 0 4px 16 px rgba(0,0,0,0.1);">
+                    <h3 style="font-size: 20px; font-weight: 700; padding: 0px; margin: 0px 0px 15px 0; color: #012970; position: relative;">Sidebar Title</h3>
+                    <div style="margin-bottom: 30px;">
+                        <form style="background: #fff; border: 1px solid #ddd; padding: 3px 10px; position: relative;" action="{{url('/blog/search')}}">
+                            <input class="form-controler" type="text" name="search" id="search">
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
+                    <h3 style="font-size: 20px; font-weight: 700; padding: 0px; margin: 0px 0px 15px 0; color: #012970; position: relative;">Category</h3>
+                    <div>
+                        <ul style="list-style: none; padding: 0px;">
+                            <li style="padding-top: 10px;"><a style="color: #012970; transition: 0.3s;" href="">General <span>(25)</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</main>
 @endsection

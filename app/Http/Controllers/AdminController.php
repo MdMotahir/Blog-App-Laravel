@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Blog;
+use App\Models\User;
+use App\Models\Category;
 
 class AdminController extends Controller
 {
@@ -17,7 +20,10 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $blogs=Blog::all();
+        $category=Category::all();
+        $users=User::all();
+        return view('Auth.dashboard',['blogs'=>$blogs,'category'=>$category,'users'=>$users]);
     }
 
     /**

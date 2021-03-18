@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Reply;
 use Gate;
 
 class BlogController extends Controller
@@ -17,7 +18,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $data=Blog::all();
+        $data=Blog::all()->sortByDesc('id');
         return view('Blog.index',['blogs'=>$data]);
     }
 
@@ -138,13 +139,37 @@ class BlogController extends Controller
     }
     public function save_comment(Request $request, $id){
         $request->validate([
-            'comment'=>'required',
+            'comment'=>'required|min:2',
         ]);
         $comment=Comment::create([
             'comment'=>$request->comment,
             'author_id'=>auth()->user()->id,
             'blog_id'=>$id,
         ]);
-        return redirect('blog/'.$id)->with('status','Your comment is added');
+        return redirect('blog/'.$id)->with('success','Your comment is added');
+    }
+    public function save_reply(Request $request, $id){
+        $request->validate([
+            'reply'=>'required|min:2',
+        ]);
+        
+        $reply=Reply::create([
+            'reply'=>$request->reply,
+            'author_id'=>auth()->user()->id,
+            'comment_id'=>$id,
+        ]);
+        return redirect()->back()->with('success','Your reply successfully is added');
+    }
+    public function search(Request $request){
+        $request->validate([
+            'search'=>'required',
+        ]);
+        $search=$request->search;
+        
+        $data=Blog::where('title','LIKE','%'.$search.'%')->orwhere('content','LIKE','%'.$search.'%')->get();
+
+
+        // return $data;
+        return view('Blog.index',['blogs'=>$data]);
     }
 }

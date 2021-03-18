@@ -1,79 +1,28 @@
-@extends('layouts.app')
+@extends('Home')
 
 @section('content')
-<main class="sm:container sm:mx-auto sm:max-w-lg sm:mt-10">
-    <div class="flex">
-        <div class="w-full">
-            <section class="flex flex-col break-words bg-white sm:border-1 sm:rounded-md sm:shadow-sm sm:shadow-lg">
-
-                <header class="font-semibold bg-gray-200 text-gray-700 py-5 px-6 sm:py-6 sm:px-8 sm:rounded-t-md">
-                    {{ __('Login') }}
-                </header>
-
-                <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST" action="{{ route('login') }}">
-                    @csrf
-
-                    <div class="flex flex-wrap">
-                        <label for="email" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-                            {{ __('E-Mail Address') }}:
-                        </label>
-
-                        <input id="email" type="email"
-                            class="form-input w-full @error('email') border-red-500 @enderror" name="email"
-                            value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                        @error('email')
-                        <p class="text-red-500 text-xs italic mt-4">
-                            {{ $message }}
-                        </p>
-                        @enderror
-                    </div>
-
-                    <div class="flex flex-wrap">
-                        <label for="password" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-                            {{ __('Password') }}:
-                        </label>
-
-                        <input id="password" type="password"
-                            class="form-input w-full @error('password') border-red-500 @enderror" name="password"
-                            required>
-
-                        @error('password')
-                        <p class="text-red-500 text-xs italic mt-4">
-                            {{ $message }}
-                        </p>
-                        @enderror
-                    </div>
-
-                    <div class="flex items-center">
-
-                        @if (Route::has('password.request'))
-                        <a class="text-sm text-blue-500 hover:text-blue-700 whitespace-no-wrap no-underline hover:underline ml-auto"
-                            href="{{ route('password.request') }}">
-                            {{ __('Forgot Your Password?') }}
-                        </a>
-                        @endif
-                    </div>
-
-                    <div class="flex flex-wrap">
-                        <button type="submit"
-                        class="w-full select-none font-bold whitespace-no-wrap p-3 rounded-lg text-base leading-normal no-underline text-gray-100 bg-blue-500 hover:bg-blue-700 sm:py-4">
-                            {{ __('Login') }}
-                        </button>
-
-                        @if (Route::has('register'))
-                        <p class="w-full text-xs text-center text-gray-700 my-6 sm:text-sm sm:my-8">
-                            {{ __("Don't have an account?") }}
-                            <a class="text-blue-500 hover:text-blue-700 no-underline hover:underline" href="{{ route('register') }}">
-                                {{ __('Register') }}
-                            </a>
-                        </p>
-                        @endif
-                    </div>
-                </form>
-
-            </section>
+    <div style="width: 340px; margin: 50px auto; background-color: #f7f7f7; box-shadow: 0px 2px 2px rgba(0,0,0,0.3); padding: 30px;">
+        <h1 class="text-center">LogIn</h1>
+        <div>
+            <form method="POST" action="{{route('login')}}">
+                @csrf
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="email" name="email" id="email" placeholder="Your Email Please" required>
+                    @error('email')
+                        <p class="alert alert-danger">{{$message}}</p>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input class="form-control" type="password" name="password" id="password" placeholder="Your Password Please" required>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">LogIn</button>
+                <div class="text-center">
+                    <p><a href="{{route('password.request')}}">Forget Password</a></p>
+                    <p>If you don't have a account then <a href="{{route('register')}}">Register</a></p>
+                </div>
+            </form>
         </div>
     </div>
-</main>
 @endsection

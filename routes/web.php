@@ -19,16 +19,19 @@ Use App\Http\Controllers\AdminController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return view('Bootstrap/home');
 });
 Auth::routes();
 
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('blog/{id}/delete',[BlogController::class,'destroy']);
+Route::get('blog/search',[BlogController::class,'search']);
 Route::resource('blog',BlogController::class);
 
 Route::post('blog/{id}/save_comment',[BlogController::class,'save_comment']);
+Route::post('blog/{id}/save_reply',[BlogController::class,'save_reply']);
 
 Route::get('admin/category/{id}/delete',[CategoryController::class,'destroy'])->middleware(['auth','isAdmin']);
 Route::resource('admin/category',CategoryController::class)->middleware(['auth','isAdmin']);
